@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HealthSync - Digital Health Platform</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.jpg">
+  <title>NkGuru - Digital Health Platform</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -50,6 +51,40 @@
       .sidebar.open {
         transform: translateX(0);
       }
+    }
+    .modal-overlay {
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+    .modal-enter {
+      animation: modalEnter 0.3s ease-out forwards;
+    }
+    .modal-exit {
+      animation: modalExit 0.2s ease-in forwards;
+    }
+    @keyframes modalEnter {
+      from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    @keyframes modalExit {
+      from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+      }
+    }
+    .input-focus:focus {
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
+      border-color: #f59e0b;
     }
   </style>
 </head>
@@ -131,7 +166,7 @@
             <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Your Health, <span class="gold-text">Simplified</span></h1>
             <p class="text-lg text-gray-700 mb-8">NkGuru connects you with pharmacies, psychologists, and health services all in one place. Manage medications, appointments, and wellness with ease.</p>
             <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-              <a href="/dashboard.html" class="gold-bg text-white py-3 px-6 rounded-lg font-medium text-center hover:bg-amber-600 transition">Get Started</a>
+              <a href="#" onclick="openModal()" class="openModal gold-bg text-white py-3 px-6 rounded-lg font-medium text-center hover:bg-amber-600 transition">Get Started</a>
               <a href="#services" class="border-2 gold-border text-amber-700 py-3 px-6 rounded-lg font-medium text-center hover:bg-amber-50 transition">Learn More</a>
             </div>
           </div>
@@ -141,6 +176,135 @@
         </div>
       </div>
     </section>
+
+    <!-- Registration Modal -->
+  <div id="registrationModal" class="fixed inset-0 z-50 hidden">
+    <div class="modal-overlay absolute inset-0"></div>
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="modal-enter bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
+        <!-- Modal Header -->
+        <div class="bg-amber-500 p-6">
+          <div class="flex justify-between items-center">
+            <h3  class="text-xl font-bold text-white">Create Your Account</h3>
+            <button onclick="closeModal()" class="text-white hover:text-amber-100 focus:outline-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="p-6">
+          <form id="registrationForm">
+            <div class="space-y-4">
+              <!-- Name -->
+              <div>
+                <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <input type="text" id="fullName" class="input-focus pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none transition" placeholder="John Doe" required>
+                </div>
+              </div>
+              
+              <!-- Email -->
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                    </svg>
+                  </div>
+                  <input type="email" id="email" class="input-focus pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none transition" placeholder="you@example.com" required>
+                </div>
+              </div>
+              
+              <!-- Phone -->
+              <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                    </svg>
+                  </div>
+                  <input type="tel" id="phone" class="input-focus pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none transition" placeholder="+1 (555) 123-4567" required>
+                </div>
+              </div>
+              
+              <!-- Address -->
+              <div>
+                <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <input type="text" id="address" class="input-focus pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none transition" placeholder="123 Main St" required>
+                </div>
+              </div>
+              
+              <!-- City/State/Zip -->
+              <div class="grid grid-cols-3 gap-4">
+                <div class="col-span-2">
+                  <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                  <input type="text" id="city" class="input-focus w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none transition" placeholder="City" required>
+                </div>
+                <div>
+                  <label for="zip" class="block text-sm font-medium text-gray-700 mb-1">ZIP</label>
+                  <input type="text" id="zip" class="input-focus w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none transition" placeholder="ZIP" required>
+                </div>
+              </div>
+              
+              <!-- Password -->
+              <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <input type="password" id="password" class="input-focus pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none transition" placeholder="••••••••" required>
+                </div>
+              </div>
+              
+              <!-- Terms Checkbox -->
+              <div class="flex items-start">
+                <div class="flex items-center h-5">
+                  <input id="terms" type="checkbox" class="input-focus h-4 w-4 text-amber-500 border-gray-300 rounded focus:ring-amber-500" required>
+                </div>
+                <div class="ml-3 text-sm">
+                  <label for="terms" class="font-medium text-gray-700">I agree to the <a href="#" class="text-amber-600 hover:text-amber-500">Terms of Service</a> and <a href="#" class="text-amber-600 hover:text-amber-500">Privacy Policy</a></label>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="mt-6">
+              <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-4 rounded-md transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+                Create Account
+              </button>
+            </div>
+          </form>
+          
+          <!-- Already have account -->
+          <div class="mt-4 text-center text-sm">
+            <p class="text-gray-600">Already have an account? <a href="#" class="text-amber-600 font-medium hover:text-amber-500">Sign in</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
     <!-- Login Section (Desktop) -->
     <section class="hidden md:block bg-white py-12 px-4 sm:px-6 lg:px-8">
@@ -166,7 +330,7 @@
           <div class="md:w-1/2 bg-amber-600 p-8 flex flex-col justify-center">
             <h2 class="text-2xl font-bold text-white mb-4">New to NKGuru?</h2>
             <p class="text-amber-100 mb-6">Join our platform to access personalized health services, medication management, and wellness tracking.</p>
-            <a href="/dashboard.html" class="inline-block bg-white text-amber-700 py-2 px-4 rounded-md font-medium text-center hover:bg-amber-50 transition">Create Account</a>
+            <a href="#" onclick="openModal()" class=" openModal inline-block bg-white text-amber-700 py-2 px-4 rounded-md font-medium text-center hover:bg-amber-50 transition">Create Account</a>
           </div>
         </div>
       </div>
@@ -320,5 +484,63 @@
       }
     });
   </script>
+  <script>
+    // Modal functionality
+ const modal = document.getElementById('registrationModal');
+ const closeBtn = document.getElementById('closeModal');
+ const form = document.getElementById('registrationForm');
+ 
+ // Open modal
+ function openModal(){
+     modal.classList.remove('hidden');
+     const modalContent = modal.querySelector('.modal-content'); // Assuming there's a modal-content element
+     modalContent.classList.add('modal-enter');
+   };
+ 
+ 
+ // Close modal
+ function closeModal() {
+  const modalContent = modal.querySelector('.modal-enter');
+  
+  // Start exit animation
+  modalContent.classList.remove('modal-enter');
+  modalContent.classList.add('modal-exit');
+  
+  // Also fade out the overlay
+  modal.querySelector('.modal-overlay').style.opacity = '0';
+  modal.querySelector('.modal-overlay').style.transition = 'opacity 0.3s ease-out';
+  
+  // Remove modal after animation completes
+  setTimeout(() => {
+    modal.classList.add('hidden');
+    modalContent.classList.remove('modal-exit');
+    // Reset overlay opacity for next open
+    modal.querySelector('.modal-overlay').style.opacity = '1';
+  }, 300); // Match this duration with your CSS animation
+}
+ 
+ // Close when clicking outside
+ modal.addEventListener('click', (e) => {
+   if (e.target === modal) {
+     closeBtn.click();
+   }
+ });
+ 
+ // Form submission
+ form.addEventListener('submit', (e) => {
+   e.preventDefault();
+   // Here you would handle form submission (AJAX, etc.)
+   alert('Registration form submitted!');
+   closeBtn.click();
+ });
+ 
+ // Close with Escape key
+ document.addEventListener('keydown', (e) => {
+   if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+     closeBtn.click();
+   }
+ });
+   </script>
+ 
 </body>
 </html>
