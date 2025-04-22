@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NkGuru - Find Psychologists</title>
+  <!-- Using same assets as your dashboard -->
+  <link rel="icon" type="image/svg+xml" href="/logo.jpg">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    /* Reusing your existing styles */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0f172a;
+      overflow-x: hidden;
+    }
+    
+    .gold-icon {
+      color: #F7C948;
+    }
+    
+    .card {
+      transition: all 0.3s ease;
+      transform: translateY(0);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .menu-item {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .menu-item:after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #F7C948;
+      transition: width 0.3s ease;
+    }
+    
+    .menu-item:hover:after {
+      width: 100%;
+    }
+    
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 0.8s forwards;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-delay-1 { animation-delay: 0.2s; }
+    .animate-delay-2 { animation-delay: 0.4s; }
+    .animate-delay-3 { animation-delay: 0.6s; }
+    
+    .glow {
+      box-shadow: 0 0 15px rgba(247, 201, 72, 0.2);
+      transition: box-shadow 0.3s ease;
+    }
+    
+    .glow:hover {
+      box-shadow: 0 0 25px rgba(247, 201, 72, 0.4);
+    }
+    
+    .sidebar-toggle {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 50;
+    }
+    
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    
+    /* New specific styles for psychology page */
+    .specialty-badge {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      color: #F7C948;
+    }
+    
+    .price-tag {
+      background: linear-gradient(135deg, #F7C948, #f59e0b);
+      color: #0f172a;
+    }
+    
+    .therapist-card {
+      border-left: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+    
+    .therapist-card:hover {
+      border-left-color: #F7C948;
+      background-color: #1e293b;
+    }
+    
+    .availability-dot {
+      width: 10px;
+      height: 10px;
+    }
+    
+    .available {
+      background-color: #10b981;
+    }
+    
+    .limited {
+      background-color: #f59e0b;
+    }
+  </style>
+</head>
+<body class="text-white">
+  <!-- Mobile menu toggle (same as dashboard) -->
+  <button id="menuToggle" class="sidebar-toggle md:hidden bg-gray-800 p-2 rounded-full shadow-lg top-4">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 gold-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+  
+  <!-- Sidebar (same as dashboard) -->
+  <div id="sidebar" class="sidebar fixed top-0 left-0 h-full w-3/4 sm:w-1/2 md:w-1/4 bg-gray-800/90 backdrop-blur-md z-40 md:transform-none md:opacity-100 shadow-xl">
+    <div class="p-6">
+      <!-- Logo -->
+      <div class="flex items-center justify-center mb-10 mt-6">
+        <div class="gold-icon">
+          <img src="/logo.jpg" alt="Logo" class="h-10 w-10 rounded-full">
+        </div>
+        <span class="text-xl font-semibold ml-2 text-amber-300">NkGuru</span>
+      </div>
+      
+      <!-- Menu Items -->
+      <nav class="flex flex-col space-y-6">
+        <a href="/" class="menu-item flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-700/50 transition-all">
+          <div class="gold-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+          </div>
+          <span>Home</span>
+        </a>
+        
+        <a href="/pharmacies" class="menu-item flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-700/50 transition-all">
+          <div class="gold-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-1 14H5c-.55 0-1-.45-1-1V8l6.94 4.34c.65.41 1.47.41 2.12 0L20 8v9c0 .55-.45 1-1 1zm-7-7L4 6h16l-8 5z"/>
+            </svg>
+          </div>
+          <span>Pharmacies</span>
+        </a>
+        
+        <a href="/psychologists" class="menu-item flex items-center space-x-3 px-2 py-2 rounded-lg bg-gray-700/50 transition-all">
+          <div class="gold-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+          </div>
+          <span>Psychologists</span>
+        </a>
+        
+        <a href="/search" class="menu-item flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-700/50 transition-all">
+          <div class="gold-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </div>
+          <span>Search</span>
+        </a>
+        
+        <a href="/upload" class="menu-item flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-700/50 transition-all">
+          <div class="gold-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+            </svg>
+          </div>
+          <span>Upload Prescription</span>
+        </a>
+        
+        <a href="/dashboard" class="menu-item flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-700/50 transition-all">
+          <div class="gold-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+            </svg>
+          </div>
+          <span>Dashboard</span>
+        </a>
+      </nav>
+      
+      <!-- User Profile -->
+      <div class="absolute bottom-6 left-0 right-0 px-6">
+        <div class="flex items-center space-x-3 bg-gray-700/50 p-3 rounded-xl hover:bg-gray-700/70 transition-all">
+          <div class="gold-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-medium">John Smith</p>
+            <p class="text-xs text-gray-400">Health Plan: Premium</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="min-h-screen w-full md:pl-[25%] pt-[30px]"> 
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 fade-in">
+        <div class="mb-4 md:mb-0">
+          <h1 class="text-3xl md:text-4xl font-bold text-amber-300">Find Psychologists</h1>
+          <p class="text-gray-400">Book sessions with licensed mental health professionals</p>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+          <div class="relative w-full">
+            <input type="text" placeholder="Search psychologists..." class="w-full bg-gray-800/70 border border-gray-700 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-300/30">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 gold-icon absolute left-3 top-2.5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </div>
+          
+          <select class="bg-gray-800/70 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-300/30">
+            <option>All Specialties</option>
+            <option>Anxiety</option>
+            <option>Depression</option>
+            <option>Trauma</option>
+            <option>Relationships</option>
+            <option>Addiction</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Therapist List -->
+      <div class="space-y-6">
+        <!-- Therapist 1 -->
+        <div class="therapist-card bg-gray-800/50 rounded-xl p-6 fade-in animate-delay-1 glow">
+          <div class="flex flex-col md:flex-row gap-6">
+            <div class="flex-shrink-0">
+              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Dr. Sarah Johnson" class="w-24 h-24 rounded-full object-cover border-2 border-amber-300">
+            </div>
+            
+            <div class="flex-grow">
+              <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                <div>
+                  <h2 class="text-xl font-bold text-amber-300">Dr. Sarah Johnson</h2>
+                  <p class="text-gray-400">Clinical Psychologist • 15 years experience</p>
+                  
+                  <div class="flex flex-wrap gap-2 mt-3">
+                    <span class="specialty-badge text-xs px-3 py-1 rounded-full">Depression</span>
+                    <span class="specialty-badge text-xs px-3 py-1 rounded-full">Anxiety</span>
+                    <span class="specialty-badge text-xs px-3 py-1 rounded-full">CBT</span>
+                  </div>
+                </div>
+                
+                <div class="flex flex-col items-end">
+                  <div class="flex items-center mb-2">
+                    <div class="flex gold-icon mr-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                    </div>
+                    <span class="text-sm">4.9 (128 reviews)</span>
+                  </div>
+                  
+                  <div class="flex items-center">
+                    <span class="availability-dot available rounded-full mr-2"></span>
+                    <span class="text-sm text-gray-300">Available today</span>
+                  </div>
+                </div>
+              </div>
+              
+              <p class="mt-4 text-gray-300">
+                Specializing in cognitive behavioral therapy for anxiety and depression. PhD from Stanford University. 
+                Provides a compassionate, evidence-based approach to mental wellness.
+              </p>
+              
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 gap-4">
+                <div>
+                  <span class="price-tag font-bold px-4 py-2 rounded-lg text-sm">$150/session</span>
+                  <span class="text-gray-400 text-sm ml-3">Accepts your insurance</span>
+                </div>
+                
+                <div class="flex gap-3 w-full sm:w-auto">
+                  <button class="flex-1 sm:flex-none bg-gray-700 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-all">
+                    View Profile
+                  </button>
+                  <button class="flex-1 sm:flex-none bg-amber-500 hover:bg-amber-600 text-gray-900 px-6 py-2 rounded-lg font-medium transition-all">
+                    Book Session
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Therapist 2 -->
+        <div class="therapist-card bg-gray-800/50 rounded-xl p-6 fade-in animate-delay-2 glow">
+          <div class="flex flex-col md:flex-row gap-6">
+            <div class="flex-shrink-0">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. Michael Chen" class="w-24 h-24 rounded-full object-cover border-2 border-amber-300">
+            </div>
+            
+            <div class="flex-grow">
+              <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                <div>
+                  <h2 class="text-xl font-bold text-amber-300">Dr. Michael Chen</h2>
+                  <p class="text-gray-400">Counseling Psychologist • 8 years experience</p>
+                  
+                  <div class="flex flex-wrap gap-2 mt-3">
+                    <span class="specialty-badge text-xs px-3 py-1 rounded-full">Relationships</span>
+                    <span class="specialty-badge text-xs px-3 py-1 rounded-full">Trauma</span>
+                    <span class="specialty-badge text-xs px-3 py-1 rounded-full">Mindfulness</span>
+                  </div>
+                </div>
+                
+                <div class="flex flex-col items-end">
+                  <div class="flex items-center mb-2">
+                    <div class="flex gold-icon mr-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+                      </svg>
+                    </div>
+                    <span class="text-sm">4.7 (92 reviews)</span>
+                  </div>
+                  
+                  <div class="flex items-center">
+                    <span class="availability-dot limited rounded-full mr-2"></span>
+                    <span class="text-sm text-gray-300">Limited availability</span>
+                  </div>
+                </div>
+              </div>
+              
+              <p class="mt-4 text-gray-300">
+                Focused on relationship counseling and trauma recovery. Uses an integrative approach combining 
+                psychodynamic therapy with mindfulness techniques. Fluent in English and Mandarin.
+              </p>
+              
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 gap-4">
+                <div>
+                  <span class="price-tag font-bold px-4 py-2 rounded-lg text-sm">$120/session</span>
+                  <span class="text-gray-400 text-sm ml-3">Accepts your insurance</span>
+                </div>
+                
+                <div class="flex gap-3 w-full sm:w-auto">
+                  <button class="flex-1 sm:flex-none bg-gray-700 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-all">
+                    View Profile
+                  </button>
+                  <button class="flex-1 sm:flex-none bg-amber-500 hover:bg-amber-600 text-gray-900 px-6 py-2 rounded-lg font-medium transition-all">
+                    Book Session
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Therapist 3 -->
+        <div class="therapist-card bg-gray-800/50 rounded-xl p-6 fade-in animate-delay-3 glow">
+          <div class="flex flex-col md:flex-row gap-6">
+            <div class="flex-shrink-0">
+              <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Dr. Amina Diallo" class="w-24 h-24 rounded-full object-cover border-2 border-amber-300">
+            </div>
+            
+            <div class="flex-grow">
+              <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                <div>
+                  <h2 class="text-xl font-bold text-amber-300">Dr. Amina Diallo</h2>
+                  <p class="text-gray-400">Child Psychologist • 12 years experience</p>
+                  
+                  <div class="flex flex-wrap gap-2 mt-3">
+                    <span class="specialty-badge text-xs px-3 py-1 rounded-full">Child Therapy</span>
+                    <span class="specialty-badge text-xs px-3 py-1 rounded-full">ADHD</span>
+                    <span class="specialty-badge text-xs px-3 py-1 rounded-full">Family Therapy</span>
+                  </div>
+                </div>
+                
+                <div class="flex flex-col items-end">
+                  <div class="flex items-center mb-2">
+                    <div class="flex gold-icon mr-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+                      </svg>
+                    </div>
+                    <span class="text-sm">4.8 (76 reviews)</span>
+                  </div>
+                  
+                  <div class="flex items-center">
+                    <span class="availability-dot available rounded-full mr-2"></span>
+                    <span class="text-sm text-gray-300">Available today</span>
+                  </div>
+                </div>
+              </div>
+              
+              <p class="mt-4 text-gray-300">
+                Specializes in child psychology and family therapy. Uses play therapy and cognitive behavioral techniques 
+                tailored for children. Works with ADHD, autism spectrum, and behavioral issues.
+              </p>
+              
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 gap-4">
+                <div>
+                  <span class="price-tag font-bold px-4 py-2 rounded-lg text-sm">$135/session</span>
+                  <span class="text-gray-400 text-sm ml-3">Accepts your insurance</span>
+                </div>
+                
+                <div class="flex gap-3 w-full sm:w-auto">
+                  <button class="flex-1 sm:flex-none bg-gray-700 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-all">
+                    View Profile
+                  </button>
+                  <button class="flex-1 sm:flex-none bg-amber-500 hover:bg-amber-600 text-gray-900 px-6 py-2 rounded-lg font-medium transition-all">
+                    Book Session
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Load More Button -->
+      <div class="mt-8 flex justify-center fade-in">
+        <button class="bg-gray-800/70 hover:bg-gray-800 text-white px-6 py-3 rounded-lg transition-all transform hover:scale-105">
+          Load More Psychologists
+        </button>
+      </div>
+      
+      <!-- Booking Modal (Hidden by default) -->
+      <div id="bookingModal" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center hidden">
+        <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-amber-300">Book a Session</h3>
+            <button id="closeModal" class="text-gray-400 hover:text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="block text-gray-400 mb-2">Select Date</label>
+              <input type="date" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-300/30">
+            </div>
+            
+            <div>
+              <label class="block text-gray-400 mb-2">Select Time</label>
+              <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-300/30">
+                <option>9:00 AM</option>
+                <option>10:30 AM</option>
+                <option>12:00 PM</option>
+                <option>2:00 PM</option>
+                <option>3:30 PM</option>
+                <option>5:00 PM</option>
+              </select>
+            </div>
+            
+            <div>
+              <label class="block text-gray-400 mb-2">Session Type</label>
+              <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-300/30">
+                <option>Initial Consultation (60 min)</option>
+                <option>Standard Session (45 min)</option>
+                <option>
+                    Follow-up Session (30 min)</option>
+                <option>Family Session (90 min)</option>
+                <option>Group Session (60 min)</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="mt-6 flex justify-end gap-3">
+                <button id="cancelBooking" class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-all">
+                  Cancel
+                </button>
+                <button id="confirmBooking" class="bg-amber-500 hover:bg-amber-600 text-gray-900 px-6 py-2 rounded-lg font-medium transition-all">
+                  Confirm Booking
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Navigation (Mobile) -->
+<div class="md:hidden fixed bottom-4 left-0 right-0 bg-gray-800/90 backdrop-blur-md border-t border-gray-700 ">
+    <div class="flex justify-around py-3">
+      <a href="#" class="flex flex-col items-center text-amber-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        <span class="text-xs mt-1">Home</span>
+      </a>
+      <a href="#" class="flex flex-col items-center text-gray-400 hover:text-amber-300 transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+        </svg>
+        <span class="text-xs mt-1">Find</span>
+      </a>
+      <a href="#" class="flex flex-col items-center text-gray-400 hover:text-amber-300 transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
+        </svg>
+        <span class="text-xs mt-1">Appointments</span>
+      </a>
+      <a href="#" class="flex flex-col items-center text-gray-400 hover:text-amber-300 transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+        </svg>
+        <span class="text-xs mt-1">Profile</span>
+      </a>
+    </div>
+  </div>
+      
+      <script>
+        // Sidebar toggle functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        menuToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('open');
+        });
+
+        // Booking modal functionality
+        const bookingModal = document.getElementById('bookingModal');
+        const closeModal = document.getElementById('closeModal');
+        const cancelBooking = document.getElementById('cancelBooking');
+        const confirmBooking = document.getElementById('confirmBooking');
+
+        document.querySelectorAll('.therapist-card button.bg-amber-500').forEach(button => {
+          button.addEventListener('click', () => {
+            bookingModal.classList.remove('hidden');
+          });
+        });
+
+        closeModal.addEventListener('click', () => {
+          bookingModal.classList.add('hidden');
+        });
+
+        cancelBooking.addEventListener('click', () => {
+          bookingModal.classList.add('hidden');
+        });
+
+        confirmBooking.addEventListener('click', () => {
+          alert('Your session has been booked!');
+          bookingModal.classList.add('hidden');
+        });
+      </script>
+    </body>
+    </html></div>
