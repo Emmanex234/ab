@@ -3,640 +3,304 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/svg+xml" href="/logo.jpg">
-  <title>NkGuru</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+  <title>HealthSync - Digital Health Platform</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #0f172a;
-      overflow-x: hidden;
+      background-color: #f8fafc;
     }
-    
-    .gold-icon {
-      color: #F7C948;
-    }
-    
-    .card {
+    .sidebar {
       transition: all 0.3s ease;
-      transform: translateY(0);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    .gold-text {
+      color: #f59e0b;
     }
-    
+    .gold-bg {
+      background-color: #f59e0b;
+    }
+    .gold-border {
+      border-color: #f59e0b;
+    }
     .menu-item {
       position: relative;
-      transition: all 0.3s ease;
     }
-    
     .menu-item:after {
       content: '';
       position: absolute;
-      bottom: -5px;
+      bottom: -2px;
       left: 0;
       width: 0;
       height: 2px;
-      background-color: #F7C948;
+      background-color: #f59e0b;
       transition: width 0.3s ease;
     }
-    
     .menu-item:hover:after {
       width: 100%;
     }
-    
-    .pulse {
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-      50% {
-        transform: scale(1.1);
-        opacity: 0.7;
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-    
-    .map-pin {
-      animation: bounce 3s infinite;
-    }
-    
-    @keyframes bounce {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-    
-    .progress-bar {
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .progress-bar:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      animation: shimmer 2s infinite;
-    }
-    
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-    
-
-
-    
-    .sidebar-toggle {
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-      z-index: 50;
-    }
-    
-    .sidebar {
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-    }
-    
-    .sidebar.open {
-      transform: translateX(0);
-    }
-    
-    .fade-in {
-      opacity: 0;
-      animation: fadeIn 0.8s forwards;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .animate-delay-1 { animation-delay: 0.2s; }
-    .animate-delay-2 { animation-delay: 0.4s; }
-    .animate-delay-3 { animation-delay: 0.6s; }
-    .animate-delay-4 { animation-delay: 0.8s; }
-    .animate-delay-5 { animation-delay: 1s; }
-    
-    .hover-float {
-      transition: transform 0.3s ease;
-    }
-    
-    .hover-float:hover {
+    .card-hover:hover {
       transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
-    
-    .glow {
-      box-shadow: 0 0 15px rgba(247, 201, 72, 0.2);
-      transition: box-shadow 0.3s ease;
-    }
-    
-    .glow:hover {
-      box-shadow: 0 0 25px rgba(247, 201, 72, 0.4);
-    }
-    
-    .slide-in-right {
-      animation: slideInRight 0.5s forwards;
-    }
-    
-    @keyframes slideInRight {
-      from { transform: translateX(50px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    
-    .wave {
-      animation: wave 3s ease-in-out infinite;
-    }
-    
-    @keyframes wave {
-      0%, 100% { transform: rotate(0); }
-      25% { transform: rotate(-5deg); }
-      75% { transform: rotate(5deg); }
-    }
-    
-    /* Responsive tweaks */
-    @media (max-width: 640px) {
-      .card-container {
-        grid-template-columns: 1fr;
+    @media (max-width: 767px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
       }
     }
   </style>
 </head>
-<body class="text-white">
-  <!-- Mobile menu toggle -->
-  <button id="menuToggle" class="sidebar-toggle md:hidden bg-gray-800 p-2 rounded-full shadow-lg top-4">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 gold-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<body class="bg-gray-50">
+  <!-- Mobile Menu Button -->
+  <button id="menuToggle" class="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-full shadow-lg">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 gold-text" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
     </svg>
   </button>
-  
+
   <!-- Sidebar -->
-  <div id="sidebar" class="sidebar fixed top-0 left-0 h-full w-3/4 sm:w-1/2 md:w-1/4 bg-gray-800/90 backdrop-blur-md z-40 md:transform-none md:opacity-100 shadow-xl">
-    <div class="p-6">
+  <div id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-40">
+    <div class="p-6 h-full flex flex-col">
       <!-- Logo -->
-      <div class="flex items-center justify-center mb-10 mt-6">
-        <div class="gold-icon">
+      <div class="flex items-center mb-10">
+        <div class="gold-text">
           <img src="/logo.jpg" alt="Logo" class="h-10 w-10 rounded-full">
         </div>
-        <span class="text-xl font-semibold ml-2 text-amber-300">NkGuru</span>
+        <span class="text-xl font-bold ml-2 gold-text">NkGuru</span>
       </div>
       
-      <!-- Menu Items -->
-      <nav class="flex flex-col space-y-6">
-        <a href="#" class="menu-item flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-700/50 transition-all">
-          <div class="gold-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-            </svg>
-          </div>
-          <span>Home</span>
-        </a>
-        
-        <a href="#" class="menu-item flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-700/50 transition-all">
-          <div class="gold-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-1 14H5c-.55 0-1-.45-1-1V8l6.94 4.34c.65.41 1.47.41 2.12 0L20 8v9c0 .55-.45 1-1 1zm-7-7L4 6h16l-8 5z"/>
-            </svg>
-          </div>
-          <span>Pharmacies</span>
-        </a>
-        
-        <a href="#" class="menu-item flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-700/50 transition-all">
-          <div class="gold-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>
-          </div>
-          <span>Psychologists</span>
-        </a>
-        
-        <a href="#" class="menu-item flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-700/50 transition-all">
-          <div class="gold-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
-          </div>
-          <span>Search</span>
-        </a>
-        
-        <a href="#" class="menu-item flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-700/50 transition-all">
-          <div class="gold-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-            </svg>
-          </div>
-          <span>Upload Prescription</span>
-        </a>
-        
-        <a href="#" class="menu-item flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-700/50 transition-all">
-          <div class="gold-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
-            </svg>
-          </div>
-          <span>Dashboard</span>
-        </a>
+      <!-- Navigation -->
+      <nav class="flex-1">
+        <ul class="space-y-3">
+          <li>
+            <a href="#" class="menu-item flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-amber-50">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 gold-text" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+              </svg>
+              <span>Home</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="menu-item flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-amber-50">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 gold-text" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd" />
+              </svg>
+              <span>About</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="menu-item flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-amber-50">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 gold-text" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
+                <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
+              </svg>
+              <span>Services</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="menu-item flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-amber-50">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 gold-text" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-2 0c0 .993-.241 1.929-.668 2.754l-1.524-1.525a3.997 3.997 0 00.078-2.183l1.562-1.562C15.802 8.249 16 9.1 16 10zm-5.165 3.913l1.58 1.58A5.98 5.98 0 0110 16a5.976 5.976 0 01-2.516-.552l1.562-1.562a4.006 4.006 0 001.789.027zm-4.677-2.796a4.002 4.002 0 01-.041-2.08l-.08.08-1.53-1.533A5.98 5.98 0 004 10c0 .954.223 1.856.619 2.657l1.54-1.54zm1.088-6.45A5.974 5.974 0 0110 4c.954 0 1.856.223 2.657.619l-1.54 1.54a4.002 4.002 0 00-2.346.033L7.246 4.668zM12 10a2 2 0 11-4 0 2 2 0 014 0z" clip-rule="evenodd" />
+              </svg>
+              <span>Support</span>
+            </a>
+          </li>
+        </ul>
       </nav>
-      
-      <!-- User Profile -->
-      <div class="absolute bottom-6 left-0 right-0 px-6">
-        <div class="flex items-center space-x-3 bg-gray-700/50 p-3 rounded-xl hover:bg-gray-700/70 transition-all">
-          <div class="gold-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-            </svg>
-          </div>
-          <div>
-            <p class="text-sm font-medium">John Smith</p>
-            <p class="text-xs text-gray-400">Health Plan: Premium</p>
-          </div>
+
+      <!-- Login Section (Mobile) -->
+      <div class="md:hidden mt-auto">
+        <div class="p-4 bg-amber-50 rounded-lg">
+          <h3 class="font-medium gold-text mb-2">Already a member?</h3>
+          <a href="/login" class="block w-full text-center gold-bg text-white py-2 px-4 rounded-lg font-medium hover:bg-amber-600 transition">Sign In</a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Main content -->
-  <div class="min-h-screen w-full md:pl-[25%] pt-[30px]"> 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <!-- Header -->
-      <div class="flex justify-between items-center mb-8 fade-in">
-        <h1 class="text-3xl md:text-4xl font-bold text-amber-300">Welcome, John</h1>
-        <div class="gold-icon bg-gray-800/70 p-3 rounded-full pulse">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
-          </svg>
-        </div>
-      </div>
-      
-      <!-- Cards Row -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 card-container">
-        <!-- Medicine Reminder Card -->
-        <div class="card bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 shadow-lg fade-in animate-delay-1 glow">
-          <div class="gold-icon mb-4 flex justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 3h12v2H6V3zm11 3H7c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-1 9h-2.5v2.5h-3V15H8v-3h2.5V9.5h3V12H16v3z"/>
-            </svg>
+  <!-- Main Content -->
+  <div class="min-h-screen md:ml-64">
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-amber-50 to-amber-100 py-20 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="md:flex md:items-center md:justify-between">
+          <div class="md:w-1/2 mb-10 md:mb-0">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Your Health, <span class="gold-text">Simplified</span></h1>
+            <p class="text-lg text-gray-700 mb-8">NkGuru connects you with pharmacies, psychologists, and health services all in one place. Manage medications, appointments, and wellness with ease.</p>
+            <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+              <a href="/register" class="gold-bg text-white py-3 px-6 rounded-lg font-medium text-center hover:bg-amber-600 transition">Get Started</a>
+              <a href="#services" class="border-2 gold-border text-amber-700 py-3 px-6 rounded-lg font-medium text-center hover:bg-amber-50 transition">Learn More</a>
+            </div>
           </div>
-          <h3 class="text-xl font-medium text-amber-300 text-center mb-2">Medicine Reminder</h3>
-          <p class="text-center text-gray-300">Take Atorvastatin</p>
-          <p class="text-center text-lg font-semibold mt-2">8:00 PM</p>
-          <div class="mt-4 flex items-center justify-center">
-            <button class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-4 py-2 rounded-lg transition-all transform hover:scale-105 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-              </svg>
-              Mark as Taken
-            </button>
-          </div>
-        </div>
-        
-        <!-- Therapy Session Card -->
-        <div class="card bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 shadow-lg fade-in animate-delay-2 glow">
-          <div class="gold-icon mb-4 flex justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-medium text-amber-300 text-center mb-2">Therapy Session</h3>
-          <p class="text-center text-gray-300">Dr. Sarah Johnson</p>
-          <p class="text-center text-lg font-semibold mt-2">April 26, 10 AM</p>
-          <div class="mt-4 flex items-center justify-center">
-            <button class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-4 py-2 rounded-lg transition-all transform hover:scale-105 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17 10H7v2h10v-2zm2-7h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zm-5-5H7v2h7v-2z"/>
-              </svg>
-              Reschedule
-            </button>
-          </div>
-        </div>
-        
-        <!-- Mood Tracker Card -->
-        <div class="card bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 shadow-lg fade-in animate-delay-3 glow">
-          <div class="gold-icon mb-4 flex justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-medium text-amber-300 text-center mb-2">Mood Tracker</h3>
-          <p class="text-center text-lg font-semibold mb-3">Good</p>
-          <div class="bg-gray-700/50 rounded-full h-3 mb-4 progress-bar">
-            <div class="bg-gradient-to-r from-amber-400 to-amber-300 h-3 rounded-full w-2/3"></div>
-          </div>
-          <div class="flex justify-between text-xs text-gray-400">
-            <span>Low</span>
-            <span>Average</span>
-            <span>High</span>
-          </div>
-          <div class="mt-4 flex items-center justify-center">
-            <button class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-4 py-2 rounded-lg transition-all transform hover:scale-105 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-              </svg>
-              Update
-            </button>
+          <div class="md:w-1/2 flex justify-center">
+            <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Healthcare illustration" class="rounded-lg shadow-xl max-w-md w-full">
           </div>
         </div>
       </div>
-      
-      <!-- Map Section -->
-      <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg mb-8 fade-in animate-delay-4">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-          <h2 class="text-2xl font-medium text-amber-300 mb-4 sm:mb-0">Suggested Pharmacies</h2>
-          <div class="flex space-x-3">
-            <button class="bg-gray-700/70 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-all transform hover:scale-105 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 gold-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
-              </svg>
-              Filters
-            </button>
-            <button class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-4 py-2 rounded-lg transition-all transform hover:scale-105 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
-              </svg>
-              Near Me
-            </button>
+    </section>
+
+    <!-- Login Section (Desktop) -->
+    <section class="hidden md:block bg-white py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto bg-gray-50 rounded-xl shadow-md overflow-hidden">
+        <div class="md:flex">
+          <div class="md:w-1/2 p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Welcome Back</h2>
+            <form>
+              <div class="mb-4">
+                <label for="email" class="block text-gray-700 text-sm font-medium mb-2">Email</label>
+                <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500">
+              </div>
+              <div class="mb-6">
+                <label for="password" class="block text-gray-700 text-sm font-medium mb-2">Password</label>
+                <input type="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500">
+              </div>
+              <button type="submit" class="w-full gold-bg text-white py-2 px-4 rounded-md font-medium hover:bg-amber-600 transition">Sign In</button>
+              <div class="mt-4 text-center">
+                <a href="#" class="text-sm gold-text hover:underline">Forgot password?</a>
+              </div>
+            </form>
+          </div>
+          <div class="md:w-1/2 bg-amber-600 p-8 flex flex-col justify-center">
+            <h2 class="text-2xl font-bold text-white mb-4">New to NKGuru?</h2>
+            <p class="text-amber-100 mb-6">Join our platform to access personalized health services, medication management, and wellness tracking.</p>
+            <a href="/dashboard.html" class="inline-block bg-white text-amber-700 py-2 px-4 rounded-md font-medium text-center hover:bg-amber-50 transition">Create Account</a>
           </div>
         </div>
-        
-        <div class="relative h-64 sm:h-80 bg-gray-900/50 rounded-xl overflow-hidden shadow-inner border border-gray-800">
-          <!-- Map with pins -->
-          <div class="absolute inset-0">
-            <!-- Map Pin 1 -->
-            <div class="absolute top-1/4 left-1/4 map-pin">
-              <div class="gold-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                </svg>
-              </div>
-              <div class="absolute w-max -left-10 -bottom-12 p-2 bg-gray-800 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                <p class="text-xs font-medium">City Pharmacy</p>
-                <p class="text-xs text-gray-400">0.8 miles away</p>
-              </div>
-            </div>
-            
-            <!-- Map Pin 2 -->
-            <div class="absolute top-1/2 left-1/2 map-pin" style="animation-delay: 0.5s">
-              <div class="gold-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                </svg>
-              </div>
-              <div class="absolute w-max -left-10 -bottom-12 p-2 bg-gray-800 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                <p class="text-xs font-medium">MediPlus</p>
-                <p class="text-xs text-gray-400">1.2 miles away</p>
-              </div>
-            </div>
-            
-            <!-- Map Pin 3 -->
-            <div class="absolute bottom-1/4 right-1/4 map-pin" style="animation-delay: 1s">
-              <div class="gold-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                </svg>
-              </div>
-              <div class="absolute w-max -left-10 -bottom-12 p-2 bg-gray-800 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                <p class="text-xs font-medium">Wellness Pharmacy</p>
-                <p class="text-xs text-gray-400">1.5 miles away</p>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Map background pattern -->
-          <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNGRkYiIGZpbGwtb3BhY2l0eT0iMC4yIj48cGF0aCBkPSJNMzYgMzRINmMtLjU1MiAwLTEtLjQ0Ny0xLTFWNmMwLS41NTIuNDQ4LTEgMS0xaDMwYy41NTIgMCAxIC40NDggMSAxdjI3YzAgLjU1My0uNDQ4IDEtMSAxem0xOCAxNkg2Yy0uNTUyIDAtMS0uNDQ3LTEtMXYtMTBjMC0uNTUyLjQ0OC0xIDEtMWgzMGMuNTUyIDAgMSAuNDQ4IDEgMXYxMGMwIC41NTMtLjQ0OCAxLTEgMXoiLz48L2c+PC9nPjwvc3ZnPg==');"></div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="services" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Services</h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">Comprehensive healthcare solutions designed for your convenience</p>
         </div>
-        
-        <!-- Pharmacy List -->
-        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div class="bg-gray-800/50 hover:bg-gray-800/70 rounded-lg p-4 transition-all hover-float">
-            <div class="flex items-start">
-              <div class="gold-icon mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-                </svg>
-              </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="bg-white p-6 rounded-xl shadow-md card-hover transition">
+            <div class="gold-text mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Prescription Management</h3>
+            <p class="text-gray-600">Upload, refill, and track your medications with our easy-to-use platform.</p>
+          </div>
+          <div class="bg-white p-6 rounded-xl shadow-md card-hover transition">
+            <div class="gold-text mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Therapist Matching</h3>
+            <p class="text-gray-600">Find licensed mental health professionals tailored to your needs.</p>
+          </div>
+          <div class="bg-white p-6 rounded-xl shadow-md card-hover transition">
+            <div class="gold-text mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Health Tracking</h3>
+            <p class="text-gray-600">Monitor your mood, symptoms, and wellness journey over time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-amber-50">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">What Our Users Say</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="bg-white p-6 rounded-xl shadow-md">
+            <div class="flex gold-text mb-4">
+              ★★★★★
+            </div>
+            <p class="text-gray-600 mb-4">"NkGuru made managing my medications so much easier. The reminders are a lifesaver!"</p>
+            <div class="flex items-center">
+              <div class="h-10 w-10 rounded-full bg-gray-300 mr-3"></div>
               <div>
-                <h3 class="font-medium text-amber-300">City Pharmacy</h3>
-                <p class="text-sm text-gray-400">123 Main St, 0.8 miles</p>
-                <div class="flex items-center mt-2">
-                  <div class="flex gold-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
-                    </svg>
-                  </div>
-                  <span class="text-xs text-gray-400 ml-1">(4.2)</span>
-                </div>
+                <h4 class="font-medium text-gray-900">Sarah J.</h4>
+                <p class="text-sm text-gray-500">Patient since 2021</p>
               </div>
             </div>
-            <button class="mt-4 w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 py-2 rounded-lg text-sm transition-all">
-              View Details
-            </button>
           </div>
-          
-          <div class="bg-gray-800/50 hover:bg-gray-800/70 rounded-lg p-4 transition-all hover-float">
-            <div class="flex items-start">
-              <div class="gold-icon mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-                </svg>
-              </div>
+          <div class="bg-white p-6 rounded-xl shadow-md">
+            <div class="flex gold-text mb-4">
+              ★★★★★
+            </div>
+            <p class="text-gray-600 mb-4">"Found the perfect therapist through HealthSync. The matching system really understands my needs."</p>
+            <div class="flex items-center">
+              <div class="h-10 w-10 rounded-full bg-gray-300 mr-3"></div>
               <div>
-                <h3 class="font-medium text-amber-300">MediPlus</h3>
-                <p class="text-sm text-gray-400">456 Oak Ave, 1.2 miles</p>
-                <div class="flex items-center mt-2">
-                  <div class="flex gold-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
-                    </svg>
-                  </div>
-                  <span class="text-xs text-gray-400 ml-1">(4.0)</span>
-                </div>
+                <h4 class="font-medium text-gray-900">Michael T.</h4>
+                <p class="text-sm text-gray-500">Patient since 2022</p>
               </div>
             </div>
-            <button class="mt-4 w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 py-2 rounded-lg text-sm transition-all">
-              View Details
-            </button>
           </div>
-          
-          <div class="bg-gray-800/50 hover:bg-gray-800/70 rounded-lg p-4 transition-all hover-float">
-            <div class="flex items-start">
-              <div class="gold-icon mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-                </svg>
-              </div>
+          <div class="bg-white p-6 rounded-xl shadow-md">
+            <div class="flex gold-text mb-4">
+              ★★★★★
+            </div>
+            <p class="text-gray-600 mb-4">"The pharmacy integration is seamless. My prescriptions are ready when I arrive."</p>
+            <div class="flex items-center">
+              <div class="h-10 w-10 rounded-full bg-gray-300 mr-3"></div>
               <div>
-                <h3 class="font-medium text-amber-300">Wellness Pharmacy</h3>
-                <p class="text-sm text-gray-400">789 Elm St, 1.5 miles</p>
-                <div class="flex items-center mt-2">
-                  <div class="flex gold-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
-                    </svg>
-                  </div>
-                  <span class="text-xs text-gray-400 ml-1">(4.5)</span>
-                </div>
+                <h4 class="font-medium text-gray-900">Lisa M.</h4>
+                <p class="text-sm text-gray-500">Patient since 2020</p>
               </div>
-            </div>
-            <button class="mt-4 w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 py-2 rounded-lg text-sm transition-all">
-              View Details
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Recent Activity -->
-      <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg fade-in animate-delay-5">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-medium text-amber-300">Recent Activity</h2>
-          <button class="text-sm text-gray-400 hover:text-amber-300 transition-all">
-            View All
-          </button>
-        </div>
-        
-        <div class="space-y-4">
-          <div class="flex items-start p-3 rounded-lg hover:bg-gray-700/30 transition-all">
-            <div class="gold-icon mr-4 mt-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
-              </svg>
-            </div>
-            <div>
-              <p class="font-medium">Prescription Refilled</p>
-              <p class="text-sm text-gray-400">Atorvastatin 20mg at City Pharmacy</p>
-              <p class="text-xs text-gray-500 mt-1">Today, 10:45 AM</p>
-            </div>
-          </div>
-          
-          <div class="flex items-start p-3 rounded-lg hover:bg-gray-700/30 transition-all">
-            <div class="gold-icon mr-4 mt-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
-              </svg>
-            </div>
-            <div>
-              <p class="font-medium">Appointment Scheduled</p>
-              <p class="text-sm text-gray-400">Therapy session with Dr. Sarah Johnson</p>
-              <p class="text-xs text-gray-500 mt-1">Yesterday, 3:30 PM</p>
-            </div>
-          </div>
-          
-          <div class="flex items-start p-3 rounded-lg hover:bg-gray-700/30 transition-all">
-            <div class="gold-icon mr-4 mt-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
-              </svg>
-            </div>
-            <div>
-              <p class="font-medium">Prescription Uploaded</p>
-              <p class="text-sm text-gray-400">New prescription for Atorvastatin</p>
-              <p class="text-xs text-gray-500 mt-1">April 18, 2023</p>
-            </div>
-          </div>
-          
-          <div class="flex items-start p-3 rounded-lg hover:bg-gray-700/30 transition-all">
-            <div class="gold-icon mr-4 mt-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-3.5v-5h4v5h-4z"/>
-              </svg>
-            </div>
-            <div>
-              <p class="font-medium">Mood Updated</p>
-              <p class="text-sm text-gray-400">Your mood was recorded as "Good"</p>
-              <p class="text-xs text-gray-500 mt-1">April 15, 2023</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  
-  <!-- Bottom Navigation (Mobile) -->
-  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-gray-800/90 backdrop-blur-md border-t border-gray-700 z-30">
-    <div class="flex justify-around py-3">
-      <a href="#" class="flex flex-col items-center text-amber-300">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-        </svg>
-        <span class="text-xs mt-1">Home</span>
-      </a>
-      <a href="#" class="flex flex-col items-center text-gray-400 hover:text-amber-300 transition-all">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-        </svg>
-        <span class="text-xs mt-1">Find</span>
-      </a>
-      <a href="#" class="flex flex-col items-center text-gray-400 hover:text-amber-300 transition-all">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
-        </svg>
-        <span class="text-xs mt-1">Appointments</span>
-      </a>
-      <a href="#" class="flex flex-col items-center text-gray-400 hover:text-amber-300 transition-all">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-        </svg>
-        <span class="text-xs mt-1">Profile</span>
-      </a>
-    </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="text-lg font-bold gold-text mb-4">NkGuru</h3>
+            <p class="text-gray-400">Connecting you to better health outcomes through technology and care.</p>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Services</h4>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Pharmacy</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Therapy</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Medication</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Wellness</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Company</h4>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white transition">About</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Careers</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Press</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Legal</h4>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Terms</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Security</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
+          <p>© 2025 NkGuru. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
   </div>
 
   <script>
@@ -650,65 +314,10 @@
     
     // Close sidebar when clicking outside
     document.addEventListener('click', (event) => {
-      if (!sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
+      const isMobile = window.innerWidth < 768;
+      if (isMobile && !sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
         sidebar.classList.remove('open');
       }
-    });
-    
-    // GSAP animations
-    gsap.registerPlugin(ScrollTrigger);
-    
-    // Animate cards on scroll
-    gsap.utils.toArray('.fade-in').forEach((element) => {
-      gsap.from(element, {
-        scrollTrigger: {
-          trigger: element,
-          start: "top 80%",
-          toggleActions: "play none none none"
-        },
-        opacity: 0,
-        y: 20,
-        duration: 0.8,
-        ease: "power2.out"
-      });
-    });
-    
-    // Animate map pins
-    gsap.to('.map-pin', {
-      y: -10,
-      duration: 1.5,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-    });
-    
-    // Pulse animation for notification icon
-    gsap.to('.pulse', {
-      scale: 1.1,
-      duration: 1,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-    });
-    
-    // Hover animations for cards
-    gsap.utils.toArray('.hover-float').forEach((card) => {
-      card.addEventListener('mouseenter', () => {
-        gsap.to(card, { y: -5, duration: 0.3, ease: "power2.out" });
-      });
-      card.addEventListener('mouseleave', () => {
-        gsap.to(card, { y: 0, duration: 0.3, ease: "power2.out" });
-      });
-    });
-    
-    // Glow effect for cards
-    gsap.utils.toArray('.glow').forEach((card) => {
-      card.addEventListener('mouseenter', () => {
-        gsap.to(card, { boxShadow: '0 0 25px rgba(247, 201, 72, 0.4)', duration: 0.3 });
-      });
-      card.addEventListener('mouseleave', () => {
-        gsap.to(card, { boxShadow: '0 0 15px rgba(247, 201, 72, 0.2)', duration: 0.3 });
-      });
     });
   </script>
 </body>
