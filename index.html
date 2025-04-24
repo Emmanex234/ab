@@ -720,6 +720,7 @@
     
     menuToggle.addEventListener('click', () => {
       sidebar.classList.toggle('open');
+      menuToggle.classList.add('hidden');
     });
     
     // Close sidebar when clicking outside
@@ -727,7 +728,9 @@
       const isMobile = window.innerWidth < 768;
       if (isMobile && !sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
         sidebar.classList.remove('open');
+        menuToggle.classList.remove('hidden');
       }
+      
     });
   </script>
   <script>
