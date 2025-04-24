@@ -239,12 +239,12 @@
       <div class="md:hidden mt-auto">
         <div class="p-4 bg-amber-50 rounded-lg">
           <h3 class="font-medium gold-text mb-2">Already a member?</h3>
-          <a href="/dashboard.html" class="block w-full text-center gold-bg text-white py-2 px-4 rounded-lg font-medium hover:bg-amber-600 transition">Sign In</a>
+          <div  class="block w-full text-center gold-bg text-white py-2 px-4 rounded-lg font-medium hover:bg-amber-600 transition" onclick="mblog()">Sign In</div>
         </div>
       </div>
     </div>
   </div>
-
+ 
   <!-- Main Content -->
   <div class="min-h-screen md:ml-64">
     <!-- Hero Section -->
@@ -552,7 +552,7 @@
 
 
     <!-- Login Section (Desktop) -->
-    <section class="hidden md:block bg-white py-12 px-4 sm:px-6 lg:px-8">
+    <section class="hidden md:block bg-white py-12 px-4 sm:px-6 lg:px-8 " id="mb" >
       <div class="max-w-4xl mx-auto bg-gray-50 rounded-xl shadow-md overflow-hidden">
         <div class="md:flex">
           <div class="md:w-1/2 p-8">
@@ -714,6 +714,7 @@
   </div>
 
   <script>
+
     // Mobile menu toggle
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
@@ -732,6 +733,43 @@
       }
       
     });
+
+    function mblog() {
+  sidebar.classList.toggle('open');
+  // Get the section element
+  const mb = document.getElementById("mb");
+  
+  // Remove the 'hidden' class to make it visible
+  mb.style.display = 'block';
+  
+  // Smoothly scroll to the section
+  mb.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
+  
+  // Close functionality when clicking outside
+  const closePopup = function(e) {
+    if (!mb.contains(e.target)) {
+      mb.classList.add('hidden');
+      document.removeEventListener('click', closePopup);
+      document.removeEventListener('keydown', handleEscape);
+    }
+  };
+  
+  // Close with Escape key
+  const handleEscape = function(e) {
+    if (e.key === 'Escape') {
+      mb.classList.add('hidden');
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('click', closePopup);
+    }
+  };
+  
+  // Add event listeners
+  document.addEventListener('click', closePopup);
+  document.addEventListener('keydown', handleEscape);
+}
   </script>
   <script>
     // Modal functionality
