@@ -253,17 +253,45 @@
         <div class="md:flex md:items-center md:justify-between">
           <div class="md:w-1/2 mb-10 md:mb-0">
             <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Your Health, <span class="gold-text">Simplified</span></h1>
-            <p class="text-lg text-gray-300 mb-8 leading-relaxed">
-              <span class="text-blue-400 font-semibold">NkGuru</span> is a digital health platform designed to connect individuals with essential healthcare services ranging from 
-              <span class="text-teal-300 font-medium">access to affordable medicines</span> and 
-              <span class="text-emerald-300 font-medium">price comparisons</span>, to 
-              <span class="text-indigo-300 font-medium">licensed psychological consultations</span>, 
-              <span class="text-cyan-300 font-medium">health education</span>, and 
-              <span class="text-purple-300 font-medium">wellness tracking</span>. Through our 
-              <span class="text-blue-300 font-medium">intuitive interface</span>, 
-              <span class="text-blue-400 font-semibold">NkGuru</span> empowers users to manage their 
-              <span class="text-sky-300 font-medium">physical and mental well-being</span> conveniently.
+            <p class="text-lg text-black mb-8 leading-relaxed">
+              <span class="font-bold shake-animation">NkGuru</span> is a digital health platform designed to connect individuals with essential healthcare services ranging from 
+              <span class="font-medium hover:font-bold transition-all duration-300 hover:shake-animation">access to affordable medicines</span> and 
+              <span class="font-medium hover:font-bold transition-all duration-300 hover:shake-animation">price comparisons</span>, to 
+              <span class="font-medium hover:font-bold transition-all duration-300 hover:shake-animation">licensed psychological consultations</span>, 
+              <span class="font-medium hover:font-bold transition-all duration-300 hover:shake-animation">health education</span>, and 
+              <span class="font-medium hover:font-bold transition-all duration-300 hover:shake-animation">wellness tracking</span>. Through our 
+              <span class="font-medium hover:font-bold transition-all duration-300 hover:shake-animation">intuitive interface</span>, 
+              <span class="font-bold shake-animation">NkGuru</span> empowers users to manage their 
+              <span class="font-medium hover:font-bold transition-all duration-300 hover:shake-animation">physical and mental well-being</span> conveniently.
             </p>
+            
+            <style>
+              @keyframes gentleShake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-0.5px) translateY(-0.5px); }
+                50% { transform: translateX(0.5px) translateY(0.5px); }
+                75% { transform: translateX(0.5px) translateY(-0.5px); }
+              }
+              .shake-animation {
+                display: inline-block;
+                animation: gentleShake 0.5s ease-in-out infinite;
+              }
+              .hover\:shake-animation:hover {
+                animation: gentleShake 0.3s ease-in-out infinite;
+              }
+            </style>
+            
+            <script>
+              // Add hover scaling to feature spans
+              document.querySelectorAll('span:not(:first-child):not(:nth-last-child(2))').forEach(span => {
+                span.addEventListener('mouseenter', () => {
+                  span.classList.add('scale-105', 'transition-transform', 'duration-200');
+                });
+                span.addEventListener('mouseleave', () => {
+                  span.classList.remove('scale-105');
+                });
+              });
+            </script>
             <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
               <a href="#" onclick="openModal()" class="openModal gold-bg text-white py-3 px-6 rounded-lg font-medium text-center hover:bg-amber-600 transition">Get Started</a>
               <a href="#services" class="border-2 gold-border text-amber-700 py-3 px-6 rounded-lg font-medium text-center hover:bg-amber-50 transition">Learn More</a>
