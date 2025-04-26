@@ -144,12 +144,12 @@
             </a>
           </li>
           <li>
-            <a href="#" class="menu-item flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-amber-50">
+            <div onclick="openApplicationModal()" class="menu-item flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-amber-50">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 gold-text" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M5.5 16a3.5 3.5 0 100-7 3.5 3.5 0 000 7zm0 2a5.5 5.5 0 110-11 5.5 5.5 0 010 11zm13-2a3.5 3.5 0 100-7 3.5 3.5 0 000 7zm0 2a5.5 5.5 0 110-11 5.5 5.5 0 010 11zM7.5 10h4.379l2.5 2.5H9.5a1 1 0 100 2h6.379l1.5 1.5H9.5a3 3 0 110-6h1.621l-1.5-1.5H7.5a1 1 0 100 2z" />
               </svg>              
               <span>Join as a Delivery Man</span>
-            </a>
+            </div>
           </li>
 
           <li>
@@ -212,13 +212,13 @@
                 </a>
               </li>
               <li>
-                <a href="#contact-us" class="menu-item flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-amber-50">
+                <div onclick="openContactModal()" class="menu-item flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-amber-50">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 gold-text" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
                   <span>Contact Us</span>
-                </a>
+                </div>
               </li>
 
             </ul>
@@ -234,6 +234,118 @@
           </script>
         </ul>
       </nav>
+<!-- Contact Modal -->
+<div id="contactModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden animate-modal-in">
+    <!-- Modal Header -->
+    <div class="bg-gray-800 text-white px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-semibold">Contact Our Team</h3>
+      <button onclick="closeContactModal()" class="text-gray-300 hover:text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Contact Form -->
+    <form class="p-6 space-y-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+          <input type="text" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+          <input type="email" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+          <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+            <option value="">Select a subject</option>
+            <option>General Inquiry</option>
+            <option>Support Request</option>
+            <option>Partnership Opportunity</option>
+            <option>Feedback/Suggestions</option>
+            <option>Other</option>
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+          <textarea rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500"></textarea>
+        </div>
+      </div>
+      
+      <div class="flex items-start">
+        <div class="flex items-center h-5">
+          <input type="checkbox" required class="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded">
+        </div>
+        <div class="ml-3">
+          <label class="text-sm text-gray-700">
+            I agree to the <a href="#" class="text-amber-600 hover:text-amber-500">privacy policy</a>
+          </label>
+        </div>
+      </div>
+      
+      <div class="flex justify-end space-x-3">
+        <button type="button" onclick="closeContactModal()" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+          Cancel
+        </button>
+        <button type="submit" class="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md transition-colors">
+          Send Message
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  @keyframes modalIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .animate-modal-in {
+    animation: modalIn 0.3s ease-out forwards;
+  }
+</style>
+
+<script>
+  // Modal Functions
+  function openContactModal() {
+    const modal = document.getElementById('contactModal');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    
+    // Close when clicking outside modal
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        closeContactModal();
+      }
+    });
+    
+    // Close with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeContactModal();
+      }
+    });
+  }
+  
+  function closeContactModal() {
+    document.getElementById('contactModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  }
+  
+  // Form submission handling
+  document.querySelector('#contactModal form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Here you would typically send the form data to your server
+    alert('Thank you for your message! We will get back to you soon.');
+    closeContactModal();
+  });
+</script>
 
       <!-- Login Section (Mobile) -->
       <div class="md:hidden mt-auto">
@@ -253,7 +365,7 @@
         <div class="md:flex md:items-center md:justify-between">
           <div class="md:w-1/2 mb-10 md:mb-0">
             <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Your Health, <span class="gold-text">Simplified</span></h1>
-            <p class="text-lg text-black mb-8 leading-relaxed">
+            <p class="text-justify text-black mb-8 leading-relaxed px-4 sm:px-0">
               <span class="font-bold shake-animation">NkGuru</span> is a digital health platform designed to connect individuals with essential healthcare services ranging from 
               <span class="font-medium hover:font-bold transition-all duration-300 hover:shake-animation">access to affordable medicines</span> and 
               <span class="font-medium hover:font-bold transition-all duration-300 hover:shake-animation">price comparisons</span>, to 
@@ -264,6 +376,7 @@
               <span class="font-bold shake-animation">NkGuru</span> empowers users to manage their 
               <span class="font-medium hover:font-bold transition-all duration-300 hover:shake-animation">physical and mental well-being</span> conveniently.
             </p>
+            
             
             <style>
               @keyframes gentleShake {
@@ -712,6 +825,165 @@
       </div>
     </footer>
   </div>
+
+<!-- Application Modal -->
+<div id="deliveryApplicationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl overflow-hidden">
+    <!-- Modal Header -->
+    <div class="bg-gray-800 text-white px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-semibold">Delivery Service Application</h3>
+      <button onclick="closeApplicationModal()" class="text-gray-300 hover:text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Application Form -->
+    <form class="p-6 space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Personal Information -->
+        <div class="space-y-4">
+          <h4 class="text-lg font-medium text-gray-800 border-b pb-2">Personal Information</h4>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+            <input type="text" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+            <input type="tel" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+          </div>
+        </div>
+        
+        <!-- Delivery Information -->
+        <div class="space-y-4">
+          <h4 class="text-lg font-medium text-gray-800 border-b pb-2">Delivery Information</h4>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+            <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+              <option value="">Select Vehicle</option>
+              <option>Motorcycle</option>
+              <option>Car</option>
+              <option>Bicycle</option>
+              <option>Other</option>
+            </select>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">License Plate (if applicable)</label>
+            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Availability</label>
+            <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+              <option value="">Select Availability</option>
+              <option>Full-time</option>
+              <option>Part-time</option>
+              <option>Weekends Only</option>
+              <option>Evenings Only</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Documents Upload -->
+      <div class="space-y-4">
+        <h4 class="text-lg font-medium text-gray-800 border-b pb-2">Required Documents</h4>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Upload Driver's License</label>
+          <div class="flex items-center">
+            <input type="file" class="hidden" id="licenseUpload">
+            <label for="licenseUpload" class="cursor-pointer bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-l-md border border-gray-300">
+              Choose File
+            </label>
+            <span class="px-4 py-2 bg-gray-50 border border-l-0 border-gray-300 rounded-r-md text-sm text-gray-500 truncate w-full">No file chosen</span>
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Upload Vehicle Registration</label>
+          <div class="flex items-center">
+            <input type="file" class="hidden" id="registrationUpload">
+            <label for="registrationUpload" class="cursor-pointer bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-l-md border border-gray-300">
+              Choose File
+            </label>
+            <span class="px-4 py-2 bg-gray-50 border border-l-0 border-gray-300 rounded-r-md text-sm text-gray-500 truncate w-full">No file chosen</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Terms and Submit -->
+      <div class="flex items-start">
+        <div class="flex items-center h-5">
+          <input type="checkbox" required class="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded">
+        </div>
+        <div class="ml-3">
+          <label class="text-sm text-gray-700">
+            I agree to the <a href="#" class="text-amber-600 hover:text-amber-500">terms and conditions</a> of delivery service
+          </label>
+        </div>
+      </div>
+      
+      <div class="flex justify-end space-x-3">
+        <button type="button" onclick="closeApplicationModal()" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+          Cancel
+        </button>
+        <button type="submit" class="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md transition-colors">
+          Submit Application
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Modal Functions
+  function openApplicationModal() {
+    const modal = document.getElementById('deliveryApplicationModal');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    
+    // Close when clicking outside modal
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        closeApplicationModal();
+      }
+    });
+    
+    // Close with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeApplicationModal();
+      }
+    });
+  }
+  
+  function closeApplicationModal() {
+    document.getElementById('deliveryApplicationModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  }
+  
+  // File input display
+  document.getElementById('licenseUpload').addEventListener('change', function(e) {
+    const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+    this.nextElementSibling.textContent = fileName;
+  });
+  
+  document.getElementById('registrationUpload').addEventListener('change', function(e) {
+    const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+    this.nextElementSibling.textContent = fileName;
+  });
+</script>
 
   <script>
 
